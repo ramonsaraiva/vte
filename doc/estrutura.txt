@@ -188,3 +188,12 @@ etapas que estao por vir eh o mais eficiente na minha mao. o TODO ta com muita
 porcaria relacionada ao sistema que eu estava desenvolvendo e a ideia tambem,
 que era de um framework. vou mante-lo do jeito que esta pois tem muitas infos
 que podem ser uteis, vou limpando ele com o tempo;
+
+* FIM DO DOC
+
+diretorio de config:
+
+por enquanto soh tem a configuraçao de conexao com o db, mas eh um formato mt
+conveniente e pode ser usado pra mais coisas
+
+* FIM DO CONFIG
