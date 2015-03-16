@@ -1,0 +1,30 @@
+<!--
+	familias-fornecedores.tpl.html
+-->
+
+<div id="create_update_filter" ng-show="on_actions(['create', 'update', 'filter'])">
+	<form class="form">
+		<div class="form-group">
+			<label>Descrição:</label>
+			<input class="form-control" ng-model="form.descricao">
+		</div>
+	</form>
+
+	<div ng-show="on_actions(['create', 'update'])">
+		<button class="btn action" ng-click="form_submit()">Confirmar</button>
+		<button class="btn action" ng-click="form_close()">Fechar</button>
+		<button class="btn action" ng-show="on_actions('create')" ng-click="form_clear()">Limpar</button>
+    </div>
+
+	<div ng-show="on_actions('filter')">
+		<button class="btn action" ng-click="filter_activate()">Ativar</button>
+		<button class="btn action" ng-click="filter_deactivate()">Desativar</button>
+	    <button class="btn action" ng-click="form_close()">Fechar</button>
+    </div>
+</div>
+
+<div id="delete" ng-show="on_actions('delete')">
+	<strong>Descrição: </strong><p>{{selected.descricao}}</p>
+    <button class="btn action" ng-show="on_actions('delete')" ng-click="form_submit()">Excluir</button>
+    <button class="btn action" ng-click="form_close()">Fechar</button>
+</div>

@@ -1,0 +1,34 @@
+#
+# ignore those patterns
+#
+
+# dot starting files except myself
+.*
+!.gitignore
+
+# backup files
+*~
+*.old
+*.bak
+
+# vim tags, session and swap files
+*.swp
+*.vim
+tags
+
+# log files
+*.log
+logs
+
+# utility files
+clean
+gvimall
+
+# resources directory
+resources
+node_modules
+python_modules
+bower_components
+
+# ChangeLog
+ChangeLog

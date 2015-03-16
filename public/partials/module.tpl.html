@@ -1,0 +1,42 @@
+<!--
+    html padrão para os modulos, algumas variaveis terão que ser setadas no route
+-->
+
+<div ng-include="'partials/navigation.tpl.html'"></div>
+
+<div id="module" class="text-center">
+    <div id="title" class="text-center">
+        <h3>{{ module_title }}</h3>
+    </div>
+
+    <div id="actions" class="">
+        <button class="btn action" ng-show="form_exists('create')" ng-click="form_open('create')">Cadastrar</button>
+        <button class="btn action" ng-show="form_exists('read')" ng-click="form_open('read')">Detalhes</button>
+        <button class="btn action" ng-show="form_exists('update')" ng-click="form_open('update')">Alterar</button>
+        <button class="btn action" ng-show="form_exists('filter')" ng-click="form_open('filter')">Filtrar</button>
+        <button class="btn action" ng-show="form_exists('delete')" ng-click="form_open('delete')">Excluir</button>
+        <button class="btn action" ng-click="fill()">Atualizar</button>
+    </div>
+
+    <br/>
+
+    <div class="container" id="forms" ng-include="'partials/forms/' + module_form"></div>
+
+    <div id="messages" class="container" ng-hide="is_empty(messages)">
+        <hr/>
+        <div class="alert alert-success" role="alert" ng-repeat="m in messages.success">{{m}}</div>
+        <div class="alert alert-info" role="alert" ng-repeat="m in messages.info">{{m}}</div>
+        <div class="alert alert-warning" role="alert" ng-repeat="m in messages.warning">{{m}}</div>
+        <div class="alert alert-danger" role="alert" ng-repeat="m in messages.danger">{{m}}</div>
+
+        <button class="btn" ng-click="clear_messages()">Limpar Mensagens</button>
+        <hr/>
+    </div>
+
+    <br/>
+
+    <div class="grid" ng-grid="grid_opts"></div>
+
+</div>
+
+<!-- end of module -->

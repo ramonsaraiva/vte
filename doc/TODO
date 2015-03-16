@@ -1,0 +1,208 @@
+/*
+ * TODO file
+ */
+
+
+** SISVENDAS
+
+ng mask input
+grid ui etc (colocar os botoes)
+diretivas logo
+locale angular
+
+Future: trabalhar com bookshelf e transformar o models.js diretamente em sql, ai
+resolve uma caralhada de problema, flexibilidade 100% e nem da tanto trabalho
+como pode parecer;
+
+usar https -- agora que eu entendi melhor, usar o digest (que ja envia md5) eh
+mais tranquilo que https (acho);
+
+** fazer instancias independentes, executando tipo npm start sisvendas (acho que
+funciona se eu colocar na sessao de scripts do package.json);
+
+Eu tinha que ter um npm sync para criar as tabelas ou fazer migrations baseado
+no models.js, que ja ta modularizado pra isso, e no start ele soh faz auth,
+ai tem que ver se eu faço um sistema de login ou se ja tem pronto para conectar
+apenas uma vez no db e autenticar separadamente, ou se eu uso auth direto pro db
+acho que a primeira opçao eh mais adequada e mais rapida, o passport deve fazer
+isso pra mim;
+
+* Login (passport-local/http);
+- Timezone pros NOWS() funcionarem direito e ajeitar o formato da data;
+- Ajeitar o alterar do preço, que não está sendo preenchido como deveria (algo
+relacionado a angular parseando o valor com virgula);
+= Validates (mensagens para os notnull etc);
+- Resolver as mensagens de erro que são passadas pelo routes para o cliente;
+- Relatórios;
+
+- Eu preciso que alguns forms ja venham preenchidos com dados de outros
+cadastros, ou, com dados gerados na hora (tipo NOW()). Um exemplo seria o form
+de venda que preenche automaticamente com o preço de venda, assim ficaria mais
+flexivel caso uma venda fosse ter um preço especial;
+- Retirar o campo de alterar do form de compra e venda ou fazer com que o
+alterar tambem afete o estoque (o que eu acredito que esteja errado);
+- Ver as paradas de diretivas da angular pra fazer os forms mais facilmente;
+- Descontos;
+- Usar transactions e uma interface melhorada para vendas, são vários produtos
+sendo vendidos em uma operação;
+- Com login feito, colocar configurações para o grid sendo salvas na conta;
+- Colocar ajax nos selects para ficar decente em relação a tabelas grandes;
+- Colocar popups de formulários (na real substituir a area do grid eh melhor);
+- Arrumar uma forma de rodar como development ou production, pra colocar tipo
+o force: true no sync, enquanto eu tiver testando coisas;
+- Estudar o migrations para caso de mudanças no banco de dados, para nao cagar
+um db já pronto quando forem necessárias modificações;
+- Filtrar com suporte a expressões (maior que, menor que, entre, etc);
+
+
+* Resolver o problema dos forms serem limpos quando passar de filtrar para
+cadastrar, antes usava variavel diferente interna (form e filter_params);
+* Remover os botões das actions que nao possuem as divs com suas respectivas
+ids;
+
+v Cliente de sync separado do sistema;
+v Ver onde estão ocorrendo os erros de object -- era uma mudança de parametros
+nos hooks que nao estava de acordo com a versao do sequelize que eu estava
+usando;
+v Estoque automático;
+v Cópia do preço na hora da venda;
+v Adicionar campos de data nas vendas e compras;
+v Ajeitar os campos de preço tanto no html e no grid quanto no tipo do database;
+v Ajeitar os nomes e campos do grid, colocar mais opções do grid para coisas
+tipo mostrar/esconder campos, mover campos, etc;
+v O estoque inicial deve ser cadastrado junto do produto, e zerado caso inputado
+em branco;
+v Fazer override no find e findAll dos modulos que precisam de include - o nome
+do negocio que da pra usar é instanceMethods, da pra fazer um find ou algo assim
+pra todos os models e usar la no routes, ou, verificar no routes se existe um
+find overridado, se sim, chama esse find, se não, usar o normal, ai acabo com
+o associations, vai tar tudo server-side e limpa o cliente, será?;
+
+= - Work in progress
+* - Problems
+v - Complete
+- - Todo
+
+** NEXT
+Colocar suporte a vários databases e routes diferentes para que uma mesma
+instancia do sistema sirva vários propositos.
+
+Melhor organização seria algo na forma de lib, no caso, modulo pro node.
+Aí teríamos uma estrutura de diretorio parecida com essa:
+
+- package.json (do próprio node, e que contenha o modulo do framework como dep)
+- app.js (main, que importa o modulo e manda ler dos arquivos de configuração)
+- routes.js (apenas com se tiver routes que serão sobreescritos)
+- models.js (obrigatório, definição das tabelas, filtros etc)
+- config.js (outras configurações como login do banco de dados)
+
+Implementar suporte à grid de detalhe para tabela mestre, de preferencia que
+funcione recursivamente.
+
+** TABELA DE_PARA
+Implementação de uma tabela que chamara DE_PARA, que vai armazenar os seguintes
+relacionamentos até o momento:
+
+- Moradores (Relação Pessoa -> Unidade)
+- Proprietários (Relação Pessoa -> Unidade)
+- Qualquer outra que se encaixe nessa situação
+
+Pseudo Schema:
+ID (derp)
+TIPO (ex: "proprietario" ou "pessoas_unidades")
+ID_DE (ex: id_pessoa)
+ID_PARA (ex: id_unidade)
+Estes campos são somente para facilitar algumas coisas, não serão associados a
+nenhuma funcionalidade:
+TABELA_DE
+TABELA_PARA
+
+Modo de usar esta tabela usando VIEW do SQL (pesquisar o uso correto de view):
+CREATE VIEW MORADORES
+SELECT ID, ID_DE ID_PESSOA, ID_PARA ID_UNIDADE FROM DEPARA
+WHERE TIPO="MORADORES"
+
+CREATE VIEW PROPRIETARIOS
+SELECT ID, ID_DE ID_PESSOA, ID_PARA ID_UNIDADE FROM DEPARA
+WHERE TIPO="PROPRIETARIOS"
+
+** HTML
+Os htmls não estão utilizando o markup correto da bootstrap, isso precisa ser
+ajustado.
+
+Na parte de forms, o filter não utiliza o mesmo ng-model que os outros forms,
+preciso dar um jeito de fazer ele utilizar o mesmo para poder reaproveitá-lo em
+caso de modulos que terão o mesmo formulário para todas essas ações.
+
+Os botões de ações precisam ganhar um highlight enquanto a action estiver ativa.
+
+Colocar botões de ações como alterar e excluir diretamente no grid é uma ideia
+conveniente.
+
+** MODELS E ROUTES
+Os routes atualmente utilizam o sequelize para fazer as queries e isso resolve a
+maioria das situações, porém, não sei como sera o comportamento disso em relação
+as VIEWS do SQL.
+
+Provávelmente será necessário um rework na parte dos routes e derrepente até
+buscar um ORM novo, tenho aqui algumas idéias para os casos:
+- Ao ives de fazer queries utilizando o ORM, montar queries utilizando um parser
+de SQL, tendo como base uma query completa para cada módulo;
+
+ORMS que suportam posgresql:
+- TODO
+
+- Procurar um ORM que lide com VIEW pode ser que resolva o essa questão, mas de
+qualquer modo o routes precisaría ser refeito para utilizar uma parametrização
+nova;
+
+SQL Parsers:
+- bookshelf
+
+** SCRIPTS DE TESTE E ROUTES
+O python precisa ser ajustado para enviar um objeto JSON corretamente para poder
+simplificar alguns loops desnecessários no routes.
+Os dados para testes precisam ser gerados novamente para poderem ser inseridos
+corretamente no novo schema.
+
+
+
+
+
+
+
+
+** PARTE DESORGANIZADA DO TODO, MANTENDO SOMENTE PARA NAO ESQUECER DE ALGUMAS MERDAS
+deu uma merda com o filter do unidades, coisa mandando int e string, fica tudo ambiguo e fode o case sensitive pqp; acho que ta resolvido
+
+angular directives;
+
+o modulo de moradores tem uma questao complexa, eu preciso saber o condominio ali pra mostrar os dados direito
+nao sei se reformular os models eh viavel e nao sei se da pra fazer algo totalmente generico, vou tentar criar custom queries no model,
+se nao der, vai ter que ser override na route de list, o resto da pra fazer pelo html, alias, o condominio... PQP o form de entrada tem que ter condominio tbm,
+escolhe condominio e lista no terceiro soh as unidades daquele cond, talvez nao seja tao ruim, essa sera a proxima saga.
+
+SELECT * FROM MORADORES
+PESSOAS - UNIDADES
+
+Diretivas da angular (vale a pena ser estudad):
+<form class="">
+	<formedit class="formedit" caption="Proprietário" ng-model="sdd" formedit="{type:number, }"/>
+
+</form>
+Type: E
+
+Exemplo de query para preencher o select de dependencia do modulo unidades;
+SELECT UNIDADES.ID, CONCAT(UNIDADES.NUMERO, " ", BLOCOS.DESCRICAO) DESCRICAO FROM UNIDADES
+LEFT OUTER JOIN BLOCOS ON BLOCOS.ID=UNIDADES.IDBLOCO
+
+102
+103
+201
+
+102 BLOCO 1
+102 BLOCO 2
+103 BLOCO 1
+103 BLOCO 2
+201 BLOCO 1
+201 BLOCO21

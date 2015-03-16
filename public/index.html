@@ -1,0 +1,46 @@
+<!doctype html>
+
+<html ng-app="app">
+<head>
+	<!-- app.value() no config ou app.js pra title e footer -->
+	<title>Sistema de Vendas</title>
+
+	<!-- scripts -->
+
+	<!-- jquery -->
+	<script src="/bower_components/jquery/dist/jquery.min.js"></script>
+
+	<!-- angular e seus modulos -->
+	<script src="/bower_components/angular/angular.min.js"></script>
+	<script src="/bower_components/angular-route/angular-route.min.js"></script>
+	<script src="/bower_components/angular-grid/ng-grid-2.0.14.min.js"></script>
+	<script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+	<script src="/bower_components/angular-ui-select/dist/select.min.js"></script>
+	<script src="/bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+
+	<!-- end of scripts -->
+
+	<!-- styles -->
+	<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/bower_components/angular-ui-select/dist/select.min.css">
+	<link rel="stylesheet" href="/bower_components/angular-grid/ng-grid.min.css">
+	<!-- end of styles -->
+
+	<!-- interno -->
+	<script src="js/app.js"></script>
+	<script src="js/controllers.js"></script>
+	<script src="js/services.js"></script>
+
+	<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+	<div class="container-fluid" ng-view></div>
+
+	<div class="text-center text-muted">
+		<p>Sistema de Vendas</p>
+	</div>
+
+</body>
+
+</html>

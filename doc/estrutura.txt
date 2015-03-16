@@ -1,0 +1,190 @@
+estrutura basica dos arquivos
+
+diretorio models (que na real nao acho que deveria se chamar models):
+
+atualmente o diretorio de models nao eh bem modularizado, soh tem dois arquivos
+que sao o index.js (que eh parecido com o __init__ do python, nao se importa
+diretamente um arquivo dentro de models, se importa o diretorio) e o models.js
+(que tem TUDO que tem relaçao com o db, inclusive filtros e outras coisas, que,
+apesar de muito imundas, eu deixei por la mesmo.
+
+minha ideia pra esse diretorio era de nao chamar ele necessariamente de models e
+organiza-lo aproximadamente dessa forma:
+
+ - index.js:  carregaria todos os scripts deste diretorio e tomaria as açoes
+necessarias (um exemplo do que eh feito atualmente eh executar as relationships
+do sequelize, nao sao definidas no objeto do model, sao chmadas como funçoes
+ex: Users.hasMany(projects));
+
+- models: subdiretorio com arquivos separados por tabela ou por conjunto de
+tabelas, a organizaçao nao precisa ser seguida na risca, mas eh interessante
+separar em arquivos. soh o meu de condominio ja tava enorme e nojento e uns 3
+arquivos diferentes colaborariam bastante pra situaçao;
+
+- filters.js ou validates.js: arquivo que cuidaria da validaçao dos campos no
+server side, um exemplo seria adicionar o campo validate no campo da tabela.
+isso pode ser feito dentro do model entao nao eh uma necessidade imediata, seria
+uma questao de decencia pra nao ficar colocando validate: function(){blabla}
+num arquivo que pode ser pequeno;
+
+- forms.js: tambem nao eh necessario mas eh uma das ideias que eu tive para
+faciltar a criaçao de forms no client. este pode servir simplesmente definiçoes
+que o client pegaria em requests, ou, usar extensao de algum orm para gerar html
+mesmo. mas acho que no maximo as definiçoes seriam melhor, conhecendo a angular,
+acredito na possibilidade de que fazer os forms no client mesmo eh a soluçao
+mais limpa;
+
+- rules.js ou overrides.js ou methods.js: atualmente eu faço uma parada muito
+imunda com os models que dependem de join. da mesma forma que no django, tenho
+acesso ao model via objeto do js, e esse objeto tem suas funçoes de data finder
+tipo users.findAll(), e o que eu fiz foi o seguinte:
+users[qFindAll? 'qFindAll' : 'findAll'] - da pra acessar o objeto dessa maneira
+e foi assim que eu fiz, caso eu tenha definido dentro do objeto do model a func
+de qFindAll, ele executa ela no lugar do findAll padrao (e isso eh claramente
+horroroso). entao-se, o arquivo de rules seria pra tentar limpar essa nojeira,
+e isso eu acho que eh meio necessario porque teremos muitos modulos que se
+comportarao da mesma maneira e ficar escrevendo route extra pra eles eh perde de
+tempo;
+
+* FIM DO DIRETORIO DE MODELS
+
+diretorio de routes:
+
+atualmente routes eh um arquivo soh porque ele ta muito generico e servia quase
+todas as situaçoes simples, porem, com certeza vamos precisar de requests mais
+insanas que nao vao funcionar bem ou simplesmente nao vao funcionar numa forma
+generica. no caso do routes, eu nao tenho muitas duvidas sobre a organizaçao,
+acho que essa eh uma parte que nao tem muito o que inventar e deveria ficar tipo
+assim:
+
+- index.js: caso precisemos de alguma coisa extra (que creio eu, sera quem vai
+se preocupar com a ordem em que os arquivos serao carregados);
+
+ai teriamos esta lista sendo carregada em uma ordem especifica para que possamos
+dar override em routes automaticos e que possamos utilizar um ponto definido
+para login e nao precisar repetir em cada route a verificaçao de usuario logado,
+seria algo assim:
+
+- errors.js: provavelmente teria somente um route que seria pra lidar com erros
+de request;
+
+- auth.js ou seila do que vamos chamar: arquivo que vai definir as routes que
+lidarao com autenticaçao, todos os arquivos de route que forem incluidos apos
+ele, soh funcioarao se o cliente estiver logado;
+
+- diretorio de routes modularizados: intuitivo, routes adicionais para urls com
+regras diferentes ficarao nesse diretorio, soh temos que ver como vamos dividir
+entre os que precisarao de auth ou nao, da pra fazer algo como public e private
+e ainda terimos que analisar o nivel de permissoes, alguns usuarios podem ter
+privilegios;
+
+- default.js ou seila que raios, seriam os routes automaticos, que funcionariam
+com o formato de method/:module/:id. caso nao tenhamos um route lidando com essa
+url anteriormente, este sera executado, que eh o comportamento padrao para os
+modulos;
+
+* FIM DO DIRETORIO DE ROUTES
+
+outros arquivos do raiz:
+
+- app.js: seria um dos mains do programa, a execuçao principal no caso. podemos
+vir a ter outros serviços que as vezes nao precisariam estar vinculados ao main,
+modularizaçao eh sempre algo bom, um exemplo pra esse sistema seriam aquelas
+verificaçoes la de tempos em tempos para notifiar administradores de coisas que
+estao fora de prazo etc, isso nao precisa ficar no app.js, pode ser executado em
+outra instancia;
+
+- sync.js: arquivo separado para sincronizar os models com o schema do db, tem
+opçao de force para recriar e apagar tudo e tem como implementar migration para
+casos de modificaçoes;
+
+- common.js: nao tem expliaçao;
+
+- package.json: arquivo do proprio node/npm que define esta app, contem nome da
+app, dependencias, etc;
+
+- bower.json: arquivo de dependencias do bower basicamente;
+
+diretorio public (que tambem pode ser renomeado para client ou coisa do tipo):
+contem todo o client-side do bagulho, vou descrever a organizaçao em outra parte;
+
+diretorio test: tem um script de teste em python la, soh que o proprio node tem
+ferramentas para implementar a parte de testes, entao eh melhor reescreve-lo.
+esse script eh algo meio que necessario pro desenvolvimento, deixar varias
+situaçoes criadas la para testar o sistema vai faciliar muita porcaria, podemos
+ateh pedir pro gil colaborar com isso;
+
+node_modules: diretorio criado pelo proprio npm, funciona da mesma forma que o
+virtualenv do python, soh que pra development eh mt mais conveniente, eh uma das
+coisas que eu prefiro no node, o python eh uma ferramenta system-wide, ele nao
+eh soh uma linguagem de programaçao, entao o venv acaba sendo um bagulho complexo
+e as vezes desnecessariamente inconveniente e sujo, que nao eh o caso do npm, que
+eh algo dedicado ao node, que eh atualmente bem pequeno e dedicado a esse tipo
+de tarefa em questao;
+
+* FIM DO RAIZ
+
+cliente:
+
+o cliente sera preferencialmente todo web, a principio seguindo o conceito de
+SPA (single page application). as ferramentas que com certeza vamos utilizar
+serao angularjs, jquery, bootstrap, e extensoes das mesmas como grids e ui.
+as duas dificuldades atuais no cliente sao:
+
+1- a geraçao de forms a partir de simples definiçoes (para nao precisarmos ficar
+repetindo liaxrada da bootstrap e bla bla, a ideia seria gerar todos os forms
+encima de poucas informaçoes, e, deixar sempre aquele espaço para caso nossa
+parte generica nao resolva a situaçao termos a possibilidade de escrevermos um
+especifico. a minha ideia para isso seria a utilizaçao de diretivas da angular,
+e tneho pra mim que essa provavelmente sera a soluçao definitiva;
+
+2- modularizaçao dos routes. meu client tem o problema serio de ter todos os
+fucking routes no mesmo arquivo (app.js do dir public) e isso NAO ROLA, tipo NAO
+ROLA. ia ficar um arquivo enorme, imundo, dificil de manter. temos que dar um
+jeito de organizar isso de forma modularizada e derrepente arrumar uma forma
+melhor de passar as informaçoes para a geraçao do grid (ehllo diretivas);
+
+estrutura de diretorios do cliente atual (essa tem que ser bastante revista,
+considerando o que ja foi dito acima):
+
+- bower_components: componentes instalados pelo bower, que de preferencia soh
+usaremos os que vierem dele (acho improvavel que algo que podemos vir a utilizar
+nao esteja no repo dele);
+
+- index.html: o main do cliente, importa todos os scripts de dependencia e define
+a base da pagina, a parte dinamica dele eh o ng-view, que eh controlado pela
+angular;
+
+- css: derp
+
+- js: atualmente contem 3 arquivos, mas que tambem serao modularizados quando
+as diretivas começarem a entrar:
+- app.js: configuraçao inicial da angular como dependencias e routes;
+- controllers.js: todos os controllers estao ai atualmente, isso provavelmente
+vai mudar;
+- services.js: por enquanto soh tem o service que faz o rest da parada e com
+adiçao de filtrar e listar mas isso ta pequeno apesar de porco. como as diretivas
+normalmente estarao atreladas a serviços, proavelmente teremos mais arquivos
+de services;
+
+acredito que cada arquivo desse diretorio de js virara um diretorio futuramente.
+
+- patials: contem os pedaços de html que serao inclusos em cada route e atualmente
+um diretorio de forms soh pra nao amontoar coisa no raiz;
+
+* FIM DO CLIENTE
+
+diretorio de doc:
+
+- estrutura.txt: derp;
+
+- FIXME: lista de problemas conhecidos com prioridade mais baixa do que o que
+esta sendo atualmente feito. por enquanto ele nao tem nada porque eu tava com
+tudo amontoado no TODO, vamos mudando isso com o tempo;
+
+- TODO: bom, eu nao sou tao organizado ao ponto de usar aquele monte de ferramentas
+para fazer milestones etc, entao acho que o bom e velho arquivo de TODO com as
+etapas que estao por vir eh o mais eficiente na minha mao. o TODO ta com muita
+porcaria relacionada ao sistema que eu estava desenvolvendo e a ideia tambem,
+que era de um framework. vou mante-lo do jeito que esta pois tem muitas infos
+que podem ser uteis, vou limpando ele com o tempo;

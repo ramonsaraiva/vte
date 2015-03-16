@@ -1,0 +1,15 @@
+{
+	"username": "sisvendas",
+	"password": "sisvendas",
+	"database": "sisvendas",
+	"sequelize": {
+		"dialect": "postgres",
+		"port": "5432",
+		"timezone": "+03:00",
+		"define": {
+			"charset": "utf-8",
+			"timestamps": false,
+			"freezeTableName": true
+		}
+	}
+}

@@ -1,0 +1,57 @@
+<!--
+	compras-vendas.tpl.html
+-->
+
+<div id="create_update" ng-show="on_actions(['create', 'update'])">
+	<form class="form">
+		<div class="form-group">
+			<label>Produto:</label>
+			<ui-select ng-init="list_submodule('produtos')" ng-model="form.id_produto" theme="bootstrap">
+				<ui-select-match>{{$select.selected.nome}}</ui-select-match>
+				<ui-select-choices repeat="i.id as i in submodules['produtos'] | propsFilter: {nome: $select.search}">
+					<span ng-bind-html="html_escape((i.nome | highlight: $select.search))"></span>
+				</ui-select-choices>
+			</ui-select>
+		</div>
+		<div class="form-group" ng-show="on_module('vendas')">
+			<label>Cliente:</label>
+			<ui-select ng-init="list_submodule('clientes')" ng-model="form.id_cliente" theme="bootstrap">
+				<ui-select-match>{{$select.selected.nome}}</ui-select-match>
+				<ui-select-choices repeat="i.id as i in submodules['clientes'] | propsFilter: {nome: $select.search}">
+					<span ng-bind-html="html_escape((i.nome | highlight: $select.search))"></span>
+				</ui-select-choices>
+			</ui-select>
+		</div>
+		<div class="form-group" ng-show="on_module('compras')">
+			<label>Fornecedor:</label>
+			<ui-select ng-init="list_submodule('fornecedores')" ng-model="form.id_fornecedor" theme="bootstrap">
+				<ui-select-match>{{$select.selected.descricao}}</ui-select-match>
+				<ui-select-choices repeat="i.id as i in submodules['fornecedores'] | propsFilter: {descricao: $select.search}">
+					<span ng-bind-html="html_escape((i.descricao | highlight: $select.search))"></span>
+				</ui-select-choices>
+			</ui-select>
+		</div>
+		<div class="form-group">
+			<label>Quantidade:</label>
+			<input class="form-control" type="number" ng-model="form.quantidade">
+		</div>
+		<div class="form-group" ng-show="on_module('compras')">
+			<label>Preço:</label>
+			<input class="form-control" type="number" ng-model="form.preco">
+		</div>
+	</form>
+	<button class="btn action" ng-click="form_submit()">Confirmar</button>
+    <button class="btn action" ng-click="form_close()">Fechar</button>
+    <button class="btn action" ng-show="on_actions('create')" ng-click="form_clear()">Limpar</button>
+</div>
+
+<!-- isso vai asiur daqui quando tiver botao de excluir dentro do proprio grid, ou nao, isso vira popup -->
+<div id="delete" ng-show="on_actions('delete')">
+	<strong>Produto: </strong><p>{{selected.produto.nome}}</p>
+	<strong ng-show="on_module('compras')">Fornecedor: </strong><p>{{selected.fornecedore.descricao}}</p>
+	<strong ng-show="on_module('vendas')">Cliente: </strong><p>{{selected.cliente.nome}}</p>
+	<strong>Quantidade: </strong><p>{{selected.quantidade}}</p>
+	<strong>Valor Unitário: </strong><p>{{selected.preco}}</p>
+    <button class="btn action" ng-show="on_actions('delete')" ng-click="form_submit()">Excluir</button>
+    <button class="btn action" ng-click="form_close()">Fechar</button>
+</div>
