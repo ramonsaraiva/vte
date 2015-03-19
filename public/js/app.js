@@ -15,7 +15,38 @@ var app = angular.module('app', [
 	'services'
 ]);
 
-app.config(['$routeProvider', function($routeProvider) {
+app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
+	
+	var checkAuth = function($q, $timeout, $http, $location) {
+		var deferred = $q.defer();
+		$http.get('/loggedin').success(function(user) {
+			if (user !== '0')
+			{
+				deferred.resolve();
+			}
+			else
+			{
+				deferred.reject();
+				$location.url('/login');
+			}
+		});
+
+		return deferred.promise;
+	};
+
+	$httpProvider.interceptors.push(function($q, $location) {
+		return {
+			response: function(response) {
+				return response;
+			},
+			responseError: function(response) {
+				if (response.status === 401)
+					$location.url('/login');
+				return $q.reject(response);
+			}
+		}
+	});
+
 	$routeProvider
 		.when('/', {
 			redirectTo: '/vendas'
@@ -160,7 +191,8 @@ app.config(['$routeProvider', function($routeProvider) {
 							displayName: 'Data'
 						}]
 					};
-				}
+				},
+				loggedin: checkAuth
 			}
 		})
 		.otherwise({

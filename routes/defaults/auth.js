@@ -4,7 +4,33 @@
  */
 
 var passport = require('passport');
-var Strategy = require('passport-http').BasicStrategy;
+
+module.exports = function(app) {
+
+	app.use(function(req, res, next)
+	{
+		if (!req.isAuthenticated())
+			res.send(401);
+		else
+			next();
+	});
+
+	app.get('/loggedin', function(req, res) {
+		res.send('0');
+	});
+
+	app.get('/login', passport.authenticate('local'), function(req, res) {
+		res.send(req.user);
+	});
+
+	app.get('/logout', function(req, res) {
+		req.logOut();
+		res.sendStatus(200);
+	});
+}
+
+//var passport = require('passport');
+//var Strategy = require('passport-http').BasicStrategy;
 
 //na angular, controller principal, colocar um location pra '#/login' caso volte
 //um 401
@@ -22,16 +48,16 @@ var Strategy = require('passport-http').BasicStrategy;
 //trocar senha etc
 //talvez eu use session pra evitar query no database (que se bobear funciona
 //mais rapido que a session)
-passport.use(new Strategy(function(username, password, done) {
-    if(username == 'admin' && password == 'admin')
-        return done(null, {name: 'admin'});
+//passport.use(new Strategy(function(username, password, done) {
+//    if(username == 'admin' && password == 'admin')
+//        return done(null, {name: 'admin'});
 
-    return done(null, false, {message: 'ta errado'});
-}));
+//    return done(null, false, {message: 'ta errado'});
+//}));
 
-module.exports = function(app) {
-	app.use(passport.initialize());
-};
+//module.exports = function(app) {
+//	app.use(passport.initialize());
+//};
 
 /* #LOGIN
 	app.use(passport.authenticate('basic', {session: false}), function(req, res, next) {
