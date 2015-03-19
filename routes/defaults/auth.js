@@ -1,6 +1,6 @@
 /*
  * auth.s
- * somente para limpar o app.js
+ * arquivo que vai lidar com as routes de authenticacao
  */
 
 var passport = require('passport');
@@ -32,3 +32,19 @@ passport.use(new Strategy(function(username, password, done) {
 module.exports = function(app) {
 	app.use(passport.initialize());
 };
+
+/* #LOGIN
+	app.use(passport.authenticate('basic', {session: false}), function(req, res, next) {
+		//preciso colocar essa mensagem no negocio do passport e configurar o passport pra enviar o negocio de
+		//"o servidor diz";
+		//res.status(401).send('Você precisa estar logado para acessar ' + req.method + ': ' + req.url + '.');
+
+		next();
+	});
+
+	app.get('/logout', function(req, res) {
+		req.logOut();
+		res.sendStatus(200);
+	});
+*/
+

@@ -1,8 +1,9 @@
 {
-  "name": "sisvendas",
+  "name": "VTE",
   "version": "0.0.0",
   "authors": [
     "José Claudio <joseclaudio@maestroinformatica.com.br>"
+    "Ramon <ramonsaraiva@gmail.com>"
   ],
   "private": "true",
   "ignore": [
