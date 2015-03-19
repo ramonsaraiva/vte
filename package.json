@@ -1,9 +1,9 @@
 {
-  "name": "sisvendas",
+  "name": "VTE",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node apps/app.js"
   },
   "dependencies": {
     "body-parser": "^1.9.0",
