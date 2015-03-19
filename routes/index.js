@@ -6,7 +6,7 @@
 module.exports = function(app) {
 
 	require('./defaults/log.js')(app);
-	//require('./auth.js')(app);
+	require('./defaults/auth.js')(app);
 
 	//vira um loop
 	//require('../modules/*')(app);
