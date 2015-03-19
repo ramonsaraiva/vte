@@ -465,22 +465,21 @@ controllers.controller('module_controller',  ['$scope', '$sce', 'config', 'db', 
 	$scope.init();
 }]);
 
-controllers.controller('loginController', ['$scope', '$rootScope', '$http', '$location', function($scope, $rootScope, $http, $location) {
-	$scope.user = {};
+controllers.controller('loginController', ['$scope', '$rootScope', '$location', 'AuthenticationService', function($scope, $rootScope, $location, AuthenticationService) {
 
-	$scope.login = function()
-	{
-		$http.post('/login', {
-			username: $scope.user.username,
-			password: $scope.user.password
-		})
-		.success(function(user) {
-			$rootScope.message = 'SUCCESS';
-			$location.url('/clientes');
-		})
-		.error(function() {
-			$rootScope.message = 'DEU MERDA';
-			$location.url('/login');
+	AuthenticationService.ClearCredentials();
+
+	$scope.login = function() {
+		AuthenticationService.Login($scope.username, $scope.password, function(response) {
+			if (response.success)
+			{
+				AuthenticationService.SetCredentials($scope.username, $scope.password);
+				$location.path('/');
+			}
+			else
+			{
+				alert(response.message);
+			}
 		});
-	}
+	};
 }]);

@@ -6,6 +6,7 @@
 var app = angular.module('app', [
 	'ngRoute',
 	'ngSanitize',
+	'ngCookies',
 
 	'ui.bootstrap',
 	'ui.select',
@@ -15,38 +16,8 @@ var app = angular.module('app', [
 	'services'
 ]);
 
-app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
+app.config(['$routeProvider', function($routeProvider) {
 	
-	var checkAuth = function($q, $timeout, $http, $location) {
-		var deferred = $q.defer();
-		$http.get('/loggedin').success(function(user) {
-			if (user !== '0')
-			{
-				deferred.resolve();
-			}
-			else
-			{
-				deferred.reject();
-				$location.url('/login');
-			}
-		});
-
-		return deferred.promise;
-	};
-
-	$httpProvider.interceptors.push(function($q, $location) {
-		return {
-			response: function(response) {
-				return response;
-			},
-			responseError: function(response) {
-				if (response.status === 401)
-					$location.url('/login');
-				return $q.reject(response);
-			}
-		}
-	});
-
 	$routeProvider
 		.when('/', {
 			redirectTo: '/vendas'
@@ -191,11 +162,26 @@ app.config(['$routeProvider', '$httpProvider', function($routeProvider, $httpPro
 							displayName: 'Data'
 						}]
 					};
-				},
-				loggedin: checkAuth
+				}
 			}
 		})
 		.otherwise({
 			redirectTo: '/vendas'
 		});
+}])
+
+.run(['$rootScope', '$location', '$cookieStore', '$http',
+		function($rootScope, $location, $cookieStore, $http) {
+			// keep user logged in after page refresh
+			$rootScope.globals = $cookieStore.get('globals') || {};
+			if ($rootScope.globals.currentUser) {
+				$http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
+			}
+	 
+			$rootScope.$on('$locationChangeStart', function (event, next, current) {
+				// redirect to login page if not logged in
+				if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
+					$location.path('/login');
+				}
+			});
 }]);
