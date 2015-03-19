@@ -3,14 +3,7 @@
  * funcao horrenda e enorme, mudei de arquivo para facilitar
  */
 
-//acho que essa merda vai criar uma instancia nova de models e vai cagar tudo,
-//vou precisar repassar o models a aprtir de algum outro ponto e fazer
-//function(app, models)
-//provavelmente vai ficar no index, ja que ele vai controlar o modules e este
-//tambem depende de models
-var models = require('../models');
-
-module.exports = function(app) {
+module.exports = function(app, models) {
 	//na verdade eu deveria sempre chamar findAll, ai eu ja removeria a all()
 	//da porra do models e resolveria esse if-else gigante imundo
 	//se bobear da pra colocar isso tudo numa funcao soh e derrepente num route

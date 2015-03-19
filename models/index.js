@@ -13,8 +13,19 @@ var config = require(path.join(__dirname, '../configs/db.json'));
 var sequelize = new Sequelize(config.database, config.username, config.password, config.sequelize);
 var models = {};
 
+//colocar isso em cada model
+/*
+	var pkey =
+	{
+		type: DataTypes.INTEGER,
+		allowNull: false,
+		primaryKey: true,
+		autoIncrement: true
+	};
+	*/
+
 fs.readdirSync(__dirname).filter(function(file) {
-	return (file.indexOf('.') !== 0) && (file !== 'index.js');
+	return (file.indexOf('.') !== 0) && (file !== 'index.js') && (file === 'models.js');
 })
 .forEach(function(file) {
 	var model = sequelize.import(path.join(__dirname, file));

@@ -4,9 +4,7 @@
  * uma definido uma anteriormente
  */
 
-var models = require('../../models');
-
-module.exports = function(app) {
+module.exports = function(app, models) {
 
 	app.get('/db/:module/:id', function(req, res) {
 		var m = models[req.params.module];
