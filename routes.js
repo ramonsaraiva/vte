@@ -4,7 +4,7 @@
  */
 
 var models = require('./models');
-//var passport = require('passport');
+var passport = require('passport');
 
 /*
  * quero que a conexao do db seja persistente, soh vai ter auth pro sistema e
@@ -25,20 +25,26 @@ module.exports = function(app) {
 		next(e);
 	});
 
-/* #LOGIN
-	app.use(passport.authenticate('basic', {session: false}), function(req, res, next) {
-		//preciso colocar essa mensagem no negocio do passport e configurar o passport pra enviar o negocio de
-		//"o servidor diz";
-		//res.status(401).send('Você precisa estar logado para acessar ' + req.method + ': ' + req.url + '.');
+	app.use(function(req, res, next)
+	{
+		if (!req.isAuthenticated())
+			res.send(401);
+		else
+			next();
+	});
 
-		next();
+	app.get('/loggedin', function(req, res) {
+		res.send('0');
+	});
+
+	app.get('/login', passport.authenticate('local'), function(req, res) {
+		res.send(req.user);
 	});
 
 	app.get('/logout', function(req, res) {
 		req.logOut();
 		res.sendStatus(200);
 	});
-*/
 
 	/*
 	 * overridden routes
