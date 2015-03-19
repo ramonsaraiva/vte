@@ -1,7 +1,7 @@
 {
-	"username": "sisvendas",
-	"password": "sisvendas",
-	"database": "sisvendas",
+	"username": "vte",
+	"password": "vte",
+	"database": "vte",
 	"sequelize": {
 		"dialect": "postgres",
 		"port": "5432",
