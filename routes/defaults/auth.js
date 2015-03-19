@@ -8,25 +8,16 @@ var Strategy = require('passport-http').BasicStrategy;
 
 module.exports = function(app) {
 
+	app.use(passport.initialize());
+
 	passport.use(new Strategy(function(username, password, done) {
 		console.log('passport use');
-		return done(null, false);
+		done(null, 'test', 'test');
 	}));
 
 	app.use(passport.authenticate('basic', {session: false}), function(req, res, next) {
 		console.log('passport authenticate');
 		next();
 	});
-
-	/*
-	app.get('/login', passport.authenticate('local'), function(req, res) {
-		res.send(req.user);
-	});
-
-	app.get('/logout', function(req, res) {
-		req.logOut();
-		res.sendStatus(200);
-	});
-	*/
 }
 

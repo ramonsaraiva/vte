@@ -3,7 +3,7 @@
  *
  */
 
-var models = require('./models');
+var models = require('../models');
 
 models.sequelize.sync({force: true})
 .on('success', function() {
