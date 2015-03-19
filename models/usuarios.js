@@ -19,23 +19,25 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: false
 		},
 		id_etapa: {
-			DataTypes.INTEGER
+			type: DataTypes.INTEGER
 		},
 		ativo: {
+			type: DataTypes.BOOLEAN
 		},
 		tipo_operador: {
-
+			type: DataTypes.BOOLEAN
 		},
 		tipo_tecnico: {
+			type: DataTypes.BOOLEAN
 		},
 		tipo_estoquista: {
-
+			type: DataTypes.BOOLEAN
 		},
 		tipo_orcamento: {
-
+			type: DataTypes.BOOLEAN
 		},
 		tipo_gerencia: {
-
+			type: DataTypes.BOOLEAN
 		}
 	});
 
