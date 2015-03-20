@@ -17,6 +17,8 @@ module.exports = function(app, models) {
 			return;
 		}
 
+		console.log('callback de strategy');
+
 		models.usuarios.find({
 			where: { login: auth[0] }
 		})
@@ -42,4 +44,3 @@ module.exports = function(app, models) {
 		});
 	});
 }
-
