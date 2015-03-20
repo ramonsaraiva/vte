@@ -3,38 +3,43 @@
  * arquivo que vai lidar com as routes de authenticacao
  */
 
-var passport = require('passport');
-var Strategy = require('passport-http').BasicStrategy;
-
 module.exports = function(app, models) {
 
-	app.use(passport.initialize());
+	app.use(function(req, res, next) {
+		var auth;
 
-	passport.use(new Strategy(function(username, password, done) {
+		if (req.headers.authorization)
+			auth = req.headers.authorization.substring(6).split(':');
+
+		if (!auth)
+		{
+			res.sendStatus(401);
+			return;
+		}
 
 		models.usuarios.find({
-			where: { login: username }
+			where: { login: auth[0] }
 		})
 		.on('success', function(user) {
 			if (!user)
-				return done(null, false);
-
-			if (user.senha != password) 
-				return done(null, false);
-
-			return done(null, user);
+			{
+				res.sendStatus(401);
+			}
+			else if (user.senha !== auth[1])
+			{
+				res.sendStatus(401);
+			}
+			else
+			{
+				next();
+			}
 		})
 		.on('failure', function(e) {
-			return done(e);
+			res.sendStatus(500);
 		})
 		.on('error', function(e) {
-			return done(e);
+			res.sendStatus(401);
 		});
-	}));
-
-	app.use(passport.authenticate('basic', {session: false}), function(req, res, next) {
-		console.log('passport authenticate');
-		next();
 	});
 }
 
