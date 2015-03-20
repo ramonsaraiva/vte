@@ -1,21 +1,45 @@
 <!--
-    clientes.tpl.html
+	usuarios.tpl.html
 -->
 
 <!-- falta fazer um highlight no botao pra nao precisar colocar um titulo -->
-<div id="create_update" ng-show="on_actions(['create', 'update'])">
+<div id="create" ng-show="on_actions('create')">
 	<form class="form">
 		<div class="form-group">
 			<label>Nome:</label>
 			<input class="form-control" ng-model="form.nome">
 		</div>
 		<div class="form-group">
-			<label>E-Mail:</label>
-			<input class="form-control" ng-model="form.email">
+			<label>Login:</label>
+			<input class="form-control" ng-model="form.login">
 		</div>
 		<div class="form-group">
-			<label>Telefones:</label>
-			<input class="form-control" ng-model="form.telefones">
+			<label>Senha:</label>
+			<input class="form-control" ng-model="form.senha">
+		</div>
+		<div class="form-group">
+			<label>Ativo:</label>
+			<input type="checkbox" ng-model="form.ativo">
+		</div>
+		<div class="form-group">
+			<label>Operador:</label>
+			<input type="checkbox" ng-model="form.tipo_operador">
+		</div>
+		<div class="form-group">
+			<label>Técnico:</label>
+			<input type="checkbox" ng-model="form.tipo_tecnico">
+		</div>
+		<div class="form-group">
+			<label>Estoquista:</label>
+			<input type="checkbox" ng-model="form.tipo_estoquista">
+		</div>
+		<div class="form-group">
+			<label>Gerencia:</label>
+			<input type="checkbox" ng-model="form.tipo_gerencia">
+		</div>
+		<div class="form-group">
+			<label>Operador:</label>
+			<input type="checkbox" ng-model="form.tipo_operador">
 		</div>
 	</form>
 	<button class="btn action" ng-click="form_submit()">Confirmar</button>
