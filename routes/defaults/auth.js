@@ -12,6 +12,8 @@ module.exports = function(app, models) {
 
 	passport.use(new Strategy(function(username, password, done) {
 
+		console.log('callback de strategy');
+
 		models.usuarios.find({
 			where: { login: username }
 		})
@@ -19,7 +21,7 @@ module.exports = function(app, models) {
 			if (!user)
 				return done(null, false);
 
-			if (user.senha != password) 
+			if (user.senha != password)
 				return done(null, false);
 
 			return done(null, user);
@@ -37,4 +39,3 @@ module.exports = function(app, models) {
 		next();
 	});
 }
-
