@@ -11,13 +11,24 @@ module.exports = function(app, models) {
 	app.use(passport.initialize());
 
 	passport.use(new Strategy(function(username, password, done) {
-		console.log('passport use');
 
-		usuarios.findOne({ usuario: username }, function (err, user) {
-			if (err) { return done(err); }
-			if (!user) { return done(null, false); }
-			if (user.senha != password) { return done(null, false); }
+		models.usuarios.find({
+			where: { login: username }
+		})
+		.on('success', function(user) {
+			if (!user)
+				return done(null, false);
+
+			if (user.senha != password) 
+				return done(null, false);
+
 			return done(null, user);
+		})
+		.on('failure', function(e) {
+			return done(e);
+		})
+		.on('error', function(e) {
+			return done(e);
 		});
 	}));
 

@@ -56,7 +56,7 @@ services.factory('AuthenticationService',
             /* Dummy authentication for testing, uses $timeout to simulate api call
              ----------------------------------------------*/
             $timeout(function(){
-                var response = { success: username === 'test' && password === 'test' };
+                var response = { success: username === 'admin' && password === 'admin' };
                 if(!response.success) {
                     response.message = 'Username or password is incorrect';
                 }
