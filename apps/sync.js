@@ -15,4 +15,3 @@ models.sequelize.sync({force: true})
 .on('failure', function(e) {
 	console.log(e);
 });
-

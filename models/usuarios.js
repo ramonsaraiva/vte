@@ -29,22 +29,28 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.INTEGER
 		},
 		ativo: {
-			type: DataTypes.BOOLEAN
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
 		},
 		tipo_operador: {
-			type: DataTypes.BOOLEAN
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
 		},
 		tipo_tecnico: {
-			type: DataTypes.BOOLEAN
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
 		},
 		tipo_estoquista: {
-			type: DataTypes.BOOLEAN
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
 		},
 		tipo_orcamento: {
-			type: DataTypes.BOOLEAN
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
 		},
 		tipo_gerencia: {
-			type: DataTypes.BOOLEAN
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
 		}
 	});
 
