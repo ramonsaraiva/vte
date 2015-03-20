@@ -8,7 +8,7 @@ module.exports = function(app) {
 	var models = require('../models');
 
 	require('./defaults/log.js')(app);
-	require('./defaults/auth.js')(app);
+	require('./defaults/auth.js')(app, models);
 
 	//vira um loop
 	//require('../modules/*')(app, models);
