@@ -17,8 +17,6 @@ module.exports = function(app, models) {
 			return;
 		}
 
-		console.log('callback de strategy');
-
 		models.usuarios.find({
 			where: { login: auth[0] }
 		})
@@ -40,7 +38,7 @@ module.exports = function(app, models) {
 			res.sendStatus(500);
 		})
 		.on('error', function(e) {
-			res.sendStatus(401);
+			res.sendStatus(500);
 		});
 	});
 }
